@@ -1,0 +1,16 @@
+project_id = "zsyrhtvavattfkhmducf"
+
+[functions.get-user-currency]
+verify_jwt = false
+
+[functions.moderate-content]
+verify_jwt = false
+
+[functions.send-expiry-alerts]
+verify_jwt = false
+
+[functions.stripe-webhook]
+verify_jwt = false
+[functions.send-approval-email]
+verify_jwt = false
+

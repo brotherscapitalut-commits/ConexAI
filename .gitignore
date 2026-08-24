@@ -1,0 +1,40 @@
+# Logs
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+
+node_modules
+dist
+dist-ssr
+*.local
+
+# Editor directories and files
+.vscode/*
+!.vscode/extensions.json
+.idea
+.DS_Store
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+
+# Environment (never commit secrets)
+.env
+.env.local
+.env.*.local
+
+# Marcador local do iniciar_projeto.bat
+.schema_applied
+
+# Dados do Postgres (versoes antigas usavam bind mount)
+postgres_data/
+
+# Vaults Markdown por empresa (memória de longo prazo dos Agentes de IA) —
+# conteúdo gerado em runtime a partir de dados reais de clientes, nunca deve
+# ir para o repositório. Ver server/agents/vaultManager.js.
+server/vaults/

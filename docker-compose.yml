@@ -1,0 +1,35 @@
+# Banco de dados local do projeto.
+#
+# Os valores vêm do .env (o Docker Compose lê o .env da pasta do projeto
+# automaticamente). Antes estavam fixos aqui como `mural_digital` /
+# `sua_senha_segura`, enquanto o .env apontava para o banco `supabase_local`
+# — ou seja, o container subia com um banco que a aplicação nunca procurava,
+# e toda rota que dependia do banco falhava com erro de conexão.
+services:
+  db:
+    image: postgres:15
+    container_name: ${POSTGRES_CONTAINER:-supabase_local}
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:-postgres}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-postgres}
+      POSTGRES_DB: ${POSTGRES_DB:-supabase_local}
+    ports:
+      - "${POSTGRES_PORT:-5432}:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    # O healthcheck é o que permite ao iniciar_projeto.bat esperar o banco
+    # aceitar conexões antes de subir a API. Sem isso havia uma corrida: o
+    # Node subia primeiro, não encontrava o Postgres pronto e morria.
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-postgres} -d ${POSTGRES_DB:-supabase_local}"]
+      interval: 3s
+      timeout: 5s
+      retries: 20
+      start_period: 10s
+
+volumes:
+  # Volume nomeado em vez de bind mount (./postgres_data). No Windows, o
+  # bind mount de um diretório de dados do Postgres causa problemas de
+  # permissão e corrompe o cluster com frequência.
+  postgres_data:
